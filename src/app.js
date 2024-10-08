@@ -5,25 +5,28 @@ const app = express();
 
 
 
-app.use("/bhai/hii",(req,res) =>{
-    res.send("bhaii hii this side mohit how are you ...")
+app.get("/user", (req,res) => {
+        res.send({firstName: "mohit",lastName:"parmar"});
 })
 
-app.use("/hello",(req,res) =>{
-    res.send("hello ...")
+app.post("/user",(req,res) =>{
+        res.send("data has been saved successfully!!!...")
 })
 
-app.use("/bhai",(req,res) =>{
-    res.send("bhai...")
+app.delete("/user1",(req,res) => {
+       res.send("data has been deleted successfully!!...")
 })
 
-app.use("/bhai/hii",(req,res) =>{
-    res.send("bhaii hii...")
+
+// this will amtch all the HTTP method API calls to /test
+app.use("/test",(req,res) =>{
+    res.send("hello this is mohit")
 })
 
-app.use("/",(req,res) =>{
-    res.send("hello bhai////...")
-})
+
+
+
+
 app.listen(7777,() =>{
-       console.log("yes it is running")
+       console.log("Server is running successfully")
 });
