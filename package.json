@@ -1,0 +1,15 @@
+{
+  "name": "lovelane",
+  "version": "1.0.0",
+  "description": "lovelane is the online dating app where you can find your match",
+  "main": "app.js",
+  "scripts": {
+      "start" : "node src/app.js",
+       "dev"  : "nodemon src/app.js"
+  },
+  "author": "mohit",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}
