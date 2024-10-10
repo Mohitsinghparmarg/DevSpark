@@ -284,52 +284,52 @@
 ## app.use("/route", rH, [rH2, rH3], rH4, rh5);
     in this I can wrap the route handler in the form of array and yes they will work in the same way...
 
-- 1. like this
+  - 1. like this
                app.use("/user",[
+                  (req,res,next) =>{
+                     console.log("it is first one...")
+                     next();
+                     // res.send("1st Route handler...");
+               },
+               (req,res,next)=> {
+                     console.log("it is the second one...");
+                     next();
+                     // res.send("2nd Route handler...");
+               },
+               (req,res,next)=> {
+                  console.log("it is the third one...");
+                  next();
+                  // res.send("3rd Route handler...");
+            },
+            (req,res,next)=> {
+                  console.log("it is the fourth one...");
+                  next();
+                  res.send("4th Route handler...");
+            }, ]) 
+
+  - 2. like this
+               app.use("/user",
                (req,res,next) =>{
                   console.log("it is first one...")
                   next();
                   // res.send("1st Route handler...");
             },
-            (req,res,next)=> {
-                  console.log("it is the second one...");
+            [ (req,res,next)=> {
+                     console.log("it is the second one...");
+                     next();
+                     // res.send("2nd Route handler...");
+               },
+               (req,res,next)=> {
+                  console.log("it is the third one...");
                   next();
-                  // res.send("2nd Route handler...");
-            },
+                  // res.send("3rd Route handler...");
+            }
+         ],
             (req,res,next)=> {
-               console.log("it is the third one...");
-               next();
-               // res.send("3rd Route handler...");
-         },
-         (req,res,next)=> {
-               console.log("it is the fourth one...");
-               next();
-               res.send("4th Route handler...");
-         }, ]) 
-
-- 2. like this
-            app.use("/user",
-            (req,res,next) =>{
-               console.log("it is first one...")
-               next();
-               // res.send("1st Route handler...");
-         },
-         [ (req,res,next)=> {
-                  console.log("it is the second one...");
+                  console.log("it is the fourth one...");
                   next();
-                  // res.send("2nd Route handler...");
-            },
-            (req,res,next)=> {
-               console.log("it is the third one...");
-               next();
-               // res.send("3rd Route handler...");
-          }
-        ],
-         (req,res,next)=> {
-               console.log("it is the fourth one...");
-               next();
-               res.send("4th Route handler...");
-         }, )
+                  res.send("4th Route handler...");
+            }, )
 
 
 
