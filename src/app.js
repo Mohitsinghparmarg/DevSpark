@@ -1,20 +1,26 @@
 
-const express = require('express');
+const express = require("express");
 
 const app = express();
 
+app.use("/",
+       (req,res,next) =>{
+          console.log("it is first one...")
+          next();
+         // res.send("1st Route handler...");
+     })
 
+app.get("/user",(req,res,next)=> {
+          console.log("it is the second one...");
+          next();
+         // res.send("2nd Route handler...");
+   },
+  (req,res,next)=> {
+       console.log("it is the fourth one...");
+       res.send("4th Route handler...");
+ });
+  
 
-app.get("/user/:userId/:name/:password", (req,res) => {
-       console.log(req.params);
-        res.send({firstName: "mohit",lastName:"parmar"});
+app.listen(7777,()=>{
+         console.log("server is running on 7777...")
 })
-
-
-
-
-
-
-app.listen(7777,() =>{
-       console.log("Server is running successfully")
-});

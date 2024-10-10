@@ -1,7 +1,7 @@
 {
   "name": "lovelane",
   "version": "1.0.0",
-  "description": "lovelane is the online dating app where you can find your match",
+  "description": "FInd Your Crush is an online dating app where you can find your match",
   "main": "app.js",
   "scripts": {
       "start" : "node src/app.js",
