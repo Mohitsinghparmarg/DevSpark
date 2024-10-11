@@ -9,7 +9,6 @@ const adminAuth = (req,res,next)=>{
           next();
      }
 };
-
 const userAuth = (req,res,next)=>{
     console.log("check whether the user is Authorized or not");
        const token = "mohit";

@@ -24,7 +24,6 @@ app.post("/signup", async (req,res) => {
       }
      
 })
- 
 connectDB()
       .then(() => {
             console.log("DataBase connection Established Successfully...");

@@ -406,9 +406,48 @@ in this I can wrap the route handler in the form of array and yes they will work
    - Connect your application to the Database "Connection-url"/
    - Call the connectDB function and connect to database before starting application on 7777
    - Create a userSchema & user Model
-   - Create POST /sigup API to add data to database
-   - Push some documents using API calls from postman
-   - Error Handling using try , catch
+         
+            const mongoose = require("mongoose");
+
+            const userScema = new mongoose.Schema({
+                  firstName : {
+                        type : String
+                  },
+                  lastName : {
+                        type : String
+                  },
+                  emailId : {
+                        type : String
+                  },
+                  password : {
+                        type : String
+                  },
+                  age : {
+                        type : Number
+                  },
+                  gender : {
+                        type : String
+                  }
+            })
+        module.exports = mongoose.model("user",userScema);
+   - Create POST /sigup API to add data to database, Push some documents using API calls from postman, Error Handling using try , catch
+              app.post("/signup", async (req,res) => {
+                  const user = new User ({
+                        firstName : "tanvi",
+                        lastName  : "sharma",
+                        emailId   : "tanvisharma123@gmail.com",
+                        password  : "tanvi@123",
+                        age       :  23,
+                        gender    :  "female"
+                  })
+                  try{
+                        await user.save();
+                        res.send("user data has been successfully added...");
+                  }catch(err){
+                        res.send(400).send("Error found :" + err.message);
+                  }
+            
+            })
 
 
     
