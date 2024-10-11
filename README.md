@@ -434,12 +434,12 @@ in this I can wrap the route handler in the form of array and yes they will work
     
                       app.post("/signup", async (req,res) => {
                             const user = new User ({
-                                firstName : "tanvi",
-                                lastName  : "sharma",
-                                emailId   : "tanvisharma123@gmail.com",
-                                password  : "tanvi@123",
-                                age       :  23,
-                                gender    :  "female"
+                                firstName : "mohit",
+                                lastName  : "parmar",
+                                emailId   : "mohitparmar1501@gmail.com",
+                                password  : "mohit@123",
+                                age       :  22,
+                                gender    :  "male"
                           })
                    try{
                         await user.save();
