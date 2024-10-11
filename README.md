@@ -398,7 +398,6 @@ in this I can wrap the route handler in the form of array and yes they will work
             res.status(500).send("Something went wrong mohit bhai");
             }
       })
-
 ##
    - a beautiful and ossam documantation of mongoose
      https://mongoosejs.com/docs/guide.html
@@ -411,6 +410,6 @@ in this I can wrap the route handler in the form of array and yes they will work
    - Push some documents using API calls from postman
    - Error Handling using try , catch
 
- 
+
     
 
