@@ -2,23 +2,25 @@
 const express = require("express");
 
 const app = express();
+ 
+app.get("/user",(req,res)=>{
 
-app.use("/",
-       (req,res,next) =>{
-          console.log("it is first one...")
-          next();
-         // res.send("1st Route handler...");
-     })
+      try{
+            throw new Error("Something went wrong bhai!!!...");
+            res.send("ohh No you Found some Errors!!!...");
+      }
+      catch(err){
+            res.status(500).send("Something went wrong Mohit G");
+      }
+})
 
-app.get("/user",(req,res,next)=> {
-          console.log("it is the second one...");
-          next();
-         // res.send("2nd Route handler...");
-   },
-  (req,res,next)=> {
-       console.log("it is the fourth one...");
-       res.send("4th Route handler...");
- });
+app.use("/",(err,req,res,next)=>{
+
+      if(err){
+          res.status(500).send("Something went wrong mohit bhai");
+      }
+})
+
   
 
 app.listen(7777,()=>{

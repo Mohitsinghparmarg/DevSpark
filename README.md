@@ -332,7 +332,68 @@
             }, )
 
 
+## What is a Middleware? Why do we need it? 
+    https://www.ibm.com/topics/middleware
 
+## How express JS basically handles requests behind the scenes
+  https://expressjs.com/en/guide/using-middleware.html
+
+## Difference  between app.use and app.all
+     https://github.com/rohan-paul/Awesome-JavaScript-Interviews/blob/master/Node-Express/app.use-vs-app.get.md
+
+## Write a dummy auth middleware for admin
+     const adminAuth = (req,res,next)=>{
+    console.log("check whether the Admin is Authorized or not");
+       const token = "mohit";
+       const IsAdminAuthorized = token === "mohit";
+     if(!IsAdminAuthorized){
+          res.status(401).send("Admin is not Authorized...")
+     }
+    else{
+          next();
+     }
+  };
+
+  app.use("/admin",adminAuth,(req,res)=>{
+            res.send("admin is authorized...")
+  });
+
+## Write a dummy auth middleware for all user routes, except /user/login
+
+     const userAuth = (req,res,next)=>{
+    console.log("check whether the user is Authorized or not");
+       const token = "mohit";
+       const IsUserAuthorized = token === "mohit";
+     if(!IsUserAuthorized){
+          res.status(401).send("user is not Authorized...")
+     }
+    else{
+          next();
+     }
+  };
+
+    app.get("/user",userAuth,(req,res)=>{
+      res.send("user data sent");
+  })
+
+## Error Handling using app.use("/", (err, req, res, next) = {});
+
+       app.get("/user",(req,res)=>{
+            try{
+                  throw new Error("Something went wrong bhai!!!...");
+                  res.send("ohh No you Found some Errors!!!...");
+            }
+            catch(err){
+                  res.status(500).send("Something went wrong Mohit G");
+            }
+      })
+
+      app.use("/",(err,req,res,next)=>{
+
+            if(err){
+            res.status(500).send("Something went wrong mohit bhai");
+            }
+      })
 
 
 
