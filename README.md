@@ -449,6 +449,24 @@ in this I can wrap the route handler in the form of array and yes they will work
             
             })
 
+## difference between JavaScript object and JSON
+    https://stackoverflow.com/questions/3975859/what-are-the-differences-between-json-and-javascript-object
 
+## Add the express.json middleware to your app
+ -  simply use it in app.js :
+      - app.use(express.json());
+
+## Make your signup API dynamic to receive data from the end user
+
+              app.post("/signup", async (req,res) => {
+                  const user = new User (req.body)
+                  try{
+                        await user.save();
+                        res.send("user data has been successfully added...");
+                  }catch(err){
+                        res.send(400).send("Error found :" + err.message);
+                  }
+            
+            })
     
 
