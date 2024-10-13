@@ -454,7 +454,7 @@ in this I can wrap the route handler in the form of array and yes they will work
 
 ## Add the express.json middleware to your app
  -  simply use it in app.js :
-      - app.use(express.json());
+       - app.use(express.json());
 
 ## Make your signup API dynamic to receive data from the end user
 
@@ -471,7 +471,7 @@ in this I can wrap the route handler in the form of array and yes they will work
 ## User.findOne with duplicate email ids, which object returned
   - it will return random ...
   
-  -    app.get("/user", async (req,res) => {
+        app.get("/user", async (req,res) => {
             const UserEmail = req.body.emailId;
             try{
                   console.log("yes it is...")
@@ -489,7 +489,7 @@ in this I can wrap the route handler in the form of array and yes they will work
             })  
 
 ## API - Feed API - GET /feed - get all the users from the database
-  -      app.get("/feed", async(req,res) => {
+     app.get("/feed", async(req,res) => {
             try {
                   const AllUsers = await User.find({});
                   res.send(AllUsers);
@@ -500,7 +500,7 @@ in this I can wrap the route handler in the form of array and yes they will work
             }
         })
 ## Create a delete user API
-  -   
+ 
       app.delete("/user",async (req,res) =>{ 
          const UserId = req.body.UserId;
             try 
@@ -518,7 +518,7 @@ in this I can wrap the route handler in the form of array and yes they will work
     https://stackoverflow.com/questions/21660791/what-is-the-main-difference-between-patch-and-put-request
 
 ## API - Update a user
-      - app.patch("/user", async (req,res) => {
+       app.patch("/user", async (req,res) => {
             
             const UserId = req.body.UserId;
             const data = req.body;
@@ -538,7 +538,7 @@ in this I can wrap the route handler in the form of array and yes they will work
  - https://github.com/Automattic/mongoose/issues/4221
  -  https://stackoverflow.com/questions/32811510/mongoose-findoneandupdate-doesnt-return-updated-document
 
--         app.patch("/user", async (req,res) => {
+          app.patch("/user", async (req,res) => {
             
             const UserId = req.body.UserId;
             const data = req.body;
@@ -551,12 +551,12 @@ in this I can wrap the route handler in the form of array and yes they will work
             }catch(err){
                   res.status(400).send("Something went wrong...");
             } 
-      })
+        })
 
 
 ## API - Update the user with email ID
 
-      - app.patch("/user", async (req,res) => {
+       app.patch("/user", async (req,res) => {
             
             const emailId = req.body.emailId;
             const data = req.body;
