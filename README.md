@@ -468,5 +468,107 @@ in this I can wrap the route handler in the form of array and yes they will work
                   }
             
             })
-    
+## User.findOne with duplicate email ids, which object returned
+  - it will return random ...
+  
+  -    app.get("/user", async (req,res) => {
+            const UserEmail = req.body.emailId;
+            try{
+                  console.log("yes it is...")
+                  const user = await User.findOne({emailId : UserEmail});
+                  
+                  if(!user){
+                        res.status(404).send("user not found...");
+                  }
+                  else{
+                        res.send(user);
+                  }
+                  } catch(err){
+                  res.send(400).send("Something went wrong...");
+                  }
+            })  
+
+## API - Feed API - GET /feed - get all the users from the database
+  -      app.get("/feed", async(req,res) => {
+            try {
+                  const AllUsers = await User.find({});
+                  res.send(AllUsers);
+      
+            }
+            catch(err){
+                  res.status(400).send("these is Error!!!")
+            }
+        })
+## Create a delete user API
+  -   
+      app.delete("/user",async (req,res) =>{ 
+         const UserId = req.body.UserId;
+            try 
+            {
+                  //   const user = await User.findByIdAndDelete(UserId);
+                  const user = await User.findByIdAndDelete({_id : UserId});
+                  res.send("user deleted successfully...");
+            }
+            catch(err){
+                  res.status(400).send("Something went wrong...");
+                  }
+            })
+
+## Difference between PATCH and PUT
+    https://stackoverflow.com/questions/21660791/what-is-the-main-difference-between-patch-and-put-request
+
+## API - Update a user
+      - app.patch("/user", async (req,res) => {
+            
+            const UserId = req.body.UserId;
+            const data = req.body;
+            console.log(data);
+            try{
+                  await User.findByIdAndUpdate({_id : UserId},data);
+                  res.send("user updated successfully...");
+            }catch(err){
+                  res.status(400).send("Something went wrong...");
+            } 
+      })
+
+## Explore the Mongoose Documention for Model methods
+  - https://mongoosejs.com/docs/api/model.html
+
+## What are options in a Model.findOneAndUpdate method, explore more about it
+ - https://github.com/Automattic/mongoose/issues/4221
+ -  https://stackoverflow.com/questions/32811510/mongoose-findoneandupdate-doesnt-return-updated-document
+
+-         app.patch("/user", async (req,res) => {
+            
+            const UserId = req.body.UserId;
+            const data = req.body;
+            // console.log(data);
+            try{
+                 // const user =  await User.findByIdAndUpdate({_id : UserId},data,{returnDocument : "before"});
+                  const user =  await User.findByIdAndUpdate({_id : UserId},data,{returnDocument : "after"});
+                  console.log(user);
+                  res.send("user updated successfully...");
+            }catch(err){
+                  res.status(400).send("Something went wrong...");
+            } 
+      })
+
+
+## API - Update the user with email ID
+
+      - app.patch("/user", async (req,res) => {
+            
+            const emailId = req.body.emailId;
+            const data = req.body;
+            // console.log(data);
+            try{
+                  const user =  await User.findOneAndUpdate({emailId : emailId},data,{returnDocument : "after"});
+                 // console.log(user);
+                  res.send("user updated successfully...");
+            }catch(err){
+                  console.log(err.message);
+                  res.status(400).send("Something went wrong...");
+            } 
+      })
+      
 
