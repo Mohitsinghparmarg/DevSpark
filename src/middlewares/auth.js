@@ -1,7 +1,7 @@
 const adminAuth = (req,res,next)=>{
     console.log("check whether the Admin is Authorized or not");
        const token = "mohit";
-       const IsAdminAuthorized = token === "mohitbhai";
+       const IsAdminAuthorized = token === "mohit";
      if(!IsAdminAuthorized){
           res.status(401).send("Admin is not Authorized...")
      }

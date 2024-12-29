@@ -17,7 +17,7 @@
 
          const express = require('express');
          const app = express();
-          <!-- the problem of using .use() methos is that it will handle all of the methods like get,post,delete,patch and others which is ont a good thing -->
+          <!-- the problem of using .use() methos is that it will handle all of the methods like get,post,delete,patch and others which is not a good thing -->
          app.use("/hello",(req,res) => {
                   console.log("hello route is working .....");
                   res.send("this is /hello Route...")
@@ -126,13 +126,13 @@
    
    ## /a/
       app.get(/a/, (req,res) =>{
-          console.log("hello mohit what Darling...!!");
+          console.log("hello mohit  Darling...!!");
           res.send("data has been fetched from the Database...");
      })
 
    ## /.*fly$/
      app.get(/.*fly$/, (req,res) =>{
-          console.log("hello mohit what Darling...!!");
+          console.log("hello mohit  Darling...!!");
           res.send("data has been fetched from the Database...");
      }) 
 
@@ -335,6 +335,24 @@ in this I can wrap the route handler in the form of array and yes they will work
                   res.send("4th Route handler...");
             }, )
 
+ - 3. app.get('/user/:id', (req, res, next) => {
+
+            // if the user ID is 0, skip to the next route
+            if (req.params.id === '0') next('route')
+
+            // otherwise pass the control to the next middleware function in this stack
+            else next()
+      }, (req, res, next) => {
+
+            // send a regular response
+            res.send('regular')
+      })
+      
+      // handler for the /user/:id path, which sends a special response
+      app.get('/user/:id', (req, res, next) => {
+            res.send('special')
+      })
+
 
 ## What is a Middleware? Why do we need it? 
     https://www.ibm.com/topics/middleware
@@ -399,7 +417,7 @@ in this I can wrap the route handler in the form of array and yes they will work
             }
       })
 ##
-   - a beautiful and ossam documantation of mongoose
+   - 
      https://mongoosejs.com/docs/guide.html
    - Create a free cluster on MongoDB official website (Mongo Atlas)
    - Install mongoose library
@@ -429,18 +447,19 @@ in this I can wrap the route handler in the form of array and yes they will work
                         type : String
                   }
             })
-         module.exports = mongoose.model("user",userScema);
+         module.exports = mongoose.model("User",userScema);
+         
 - Create POST /sigup API to add data to database, Push some documents using API calls from postman, Error Handling using try , catch
     
                       app.post("/signup", async (req,res) => {
-                            const user = new User ({
-                                firstName : "mohit",
-                                lastName  : "parmar",
-                                emailId   : "mohitparmar1501@gmail.com",
-                                password  : "mohit@123",
-                                age       :  22,
-                                gender    :  "male"
-                          })
+                            const user = new User({
+                                    firstName : "mohit",
+                                    lastName  : "parmar",
+                                    emailId   : "mohitparmar1501@gmail.com",
+                                    password  : "mohit@123",
+                                    age       : 23
+        
+                          });
                    try{
                         await user.save();
                         res.send("user data has been successfully added...");
@@ -470,7 +489,8 @@ in this I can wrap the route handler in the form of array and yes they will work
             })
 ## User.findOne with duplicate email ids, which object returned
   - it will return random ...
-  
+
+## findOne()  
   -    app.get("/user", async (req,res) => {
             const UserEmail = req.body.emailId;
             try{
@@ -487,6 +507,48 @@ in this I can wrap the route handler in the form of array and yes they will work
                   res.send(400).send("Something went wrong...");
                   }
             })  
+ ## findById(MongoDBID)
+
+      app.get("/user", async (req, res) => {
+            const Id = req.body._id;
+      
+            if (!Id) {
+            return res.status(400).send("ID is required");
+            }
+      
+            try {
+            const user = await User.findById(Id).exec(); 
+            if (!user) {
+            return res.status(404).send("User not found");
+            }
+            res.status(200).json(user); 
+            } catch (err) {
+            res.status(500).send(`Something went wrong: ${err.message}`);
+            }
+      });
+
+## findByIdAndDelete(MongoDBID)
+         app.delete("/user", async (req, res) => {
+      const Id = req.body._id;
+    
+      if (!Id) {
+        return res.status(400).send("ID is required");
+      }
+    
+      try {
+        const user = await User.findByIdAndDelete(Id).exec();
+        if (!user) {
+          return res.status(404).send("User not found");
+        }
+        res.status(200).json({
+          message: "User data is deleted successfully using MongoDB's _id",
+          deletedUser: user,
+        });
+      } catch (err) {
+        res.status(500).send(`Something went wrong: ${err.message}`);
+      }
+    });
+         
 
 ## API - Feed API - GET /feed - get all the users from the database
   -      app.get("/feed", async(req,res) => {
@@ -556,7 +618,7 @@ in this I can wrap the route handler in the form of array and yes they will work
 
 ## API - Update the user with email ID
 
-      - app.patch("/user", async (req,res) => {
+ - app.patch("/user", async (req,res) => {
             
             const emailId = req.body.emailId;
             const data = req.body;
@@ -570,5 +632,65 @@ in this I can wrap the route handler in the form of array and yes they will work
                   res.status(400).send("Something went wrong...");
             } 
       })
-      
+
+- API validation for each field
+
+    app.patch("/user/:userId", async (req, res) => {
+      const userId = req.params?.userId;
+      const data = req.body;
+  
+      if (!userId) {
+          return res.status(400).json({ error: "userId is required" });
+      }
+  
+      try {
+          const ALLOWED_UPDATE = [
+              "firstName",
+              "lastName",
+              "password",
+              "age",
+              "gender",
+              "photoUrl",
+              "about",
+              "skills",
+          ];
+  
+          // Validate keys in the update data
+          const isUpdateAllowed = Object.keys(data).every((key) =>
+              ALLOWED_UPDATE.includes(key)
+          );
+  
+          if (!isUpdateAllowed) {
+              return res.status(400).json({ error: "Update contains invalid fields" });
+          }
+  
+          // Validate skills length if skills are provided
+          if (data?.skills && Array.isArray(data.skills) && data.skills.length > 10) {
+              return res.status(400).json({ error: "Skills cannot exceed 10 items" });
+          }
+  
+          // Update the user
+          const user = await User.findByIdAndUpdate(userId, data, {
+              new: true, // Return the updated document
+              runValidators: true, // Apply schema validations
+          });
+  
+          if (!user) {
+              return res.status(404).json({ error: "User not found" });
+          }
+  
+          res.status(200).json({
+              message: "User updated successfully",
+              user,
+          });
+      } catch (err) {
+          res.status(500).json({ error: "Something went wrong", details: err.message });
+      }
+  });
+  
+- Add validators for email ,password and photoURL
+    https://www.npmjs.com/package/validator
+
+
+    
 

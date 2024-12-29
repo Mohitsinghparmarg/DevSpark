@@ -3,104 +3,84 @@ const express = require("express");
 
 const connectDB =  require("./config/database");
 
+const User = require("./models/user")
+
 const app = express();
 
 app.use(express.json());
 
-const User = require("./models/user");
-
-
-
-app.patch("/user", async (req,res) => {
-        
-      const emailId = req.body.emailId;
-      const data = req.body;
-      // console.log(data);
+  app.post("/signup", async(req,res) => {
+            
+        const user = new User(req.body);
       try{
-            const user =  await User.findOneAndUpdate({emailId : emailId},data,{returnDocument : "after"});
-            console.log(user);
-            res.send("user updated successfully...");
-      }catch(err){
-            console.log(err.message);
-            res.status(400).send("Something went wrong...");
-      } 
-})
+            await user.save();
+            res.send("the user data has been stored successfully");
+      }
+      catch(err){
+             res.status(400).send(err.message);
+      }
+  })
 
-app.patch("/user", async (req,res) => {
-        
-      const UserId = req.body.UserId;
+  app.patch("/user/:userId", async (req, res) => {
+      const userId = req.params?.userId;
       const data = req.body;
-      // console.log(data);
-      try{
-            const user =  await User.findByIdAndUpdate({_id : UserId},data,{returnDocument : "after"});
-            console.log(user);
-            res.send("user updated successfully...");
-      }catch(err){
-            res.status(400).send("Something went wrong...");
-      } 
-})
+  
+      if (!userId) {
+          return res.status(400).json({ error: "userId is required" });
+      }
+  
+      try {
+          const ALLOWED_UPDATE = [
+              "firstName",
+              "lastName",
+              "password",
+              "age",
+              "gender",
+              "photoUrl",
+              "about",
+              "skills",
+          ];
+  
+          // Validate keys in the update data
+          const isUpdateAllowed = Object.keys(data).every((key) =>
+              ALLOWED_UPDATE.includes(key)
+          );
+  
+          if (!isUpdateAllowed) {
+              return res.status(400).json({ error: "Update contains invalid fields" });
+          }
+  
+          // Validate skills length if skills are provided
+          if (data?.skills && Array.isArray(data.skills) && data.skills.length > 10) {
+              return res.status(400).json({ error: "Skills cannot exceed 10 items" });
+          }
+  
+          // Update the user
+          const user = await User.findByIdAndUpdate(userId, data, {
+              new: true, // Return the updated document
+              runValidators: true, // Apply schema validations
+          });
+  
+          if (!user) {
+              return res.status(404).json({ error: "User not found" });
+          }
+  
+          res.status(200).json({
+              message: "User updated successfully",
+              user,
+          });
+      } catch (err) {
+          res.status(500).json({ error: "Something went wrong", details: err.message });
+      }
+  });
+  
+  
 
 
-
-// app.delete("/user",async (req,res) =>{
-         
-//    const UserId = req.body.UserId;
-//     try 
-//      {
-//       //   const user = await User.findByIdAndDelete(UserId);
-//         const user = await User.findByIdAndDelete({_id : UserId});
-//         res.send("user deleted successfully...");
-//     }
-//     catch(err){
-//          res.status(400).send("Something went wrong...");
-//       }
-// })
-
-
-// app.get("/user", async (req,res) => {
-         
-//        const UserEmail = req.body.emailId;
-
-
-//         try{
-//             console.log("yes it is...")
-//               const user = await User.findOne({emailId : UserEmail});
-             
-//             if(!user){
-//                   res.status(404).send("user not found...");
-//             }
-//             else{
-//                   res.send(user);
-//             }
-//       //        const users = await User.find({emailId : UserEmail});
-//       //        if(users.length === 0){
-//       //             res.status(404).send("user not found...");
-//       //        }
-//       //        else{
-//       //              res.send(users);
-//       //        }
-
-//        } catch(err){
-//                res.send(400).send("Something went wrong...");
-//        }
-
-     
-// })
-
-
-// app.get("/feed", async(req,res) => {
-       
-//       try {
-//              const AllUsers = await User.find({});
-//              res.send(AllUsers);
-     
-//       }
-//       catch(err){
-//              res.status(400).send("these is Error!!!")
-//       }
-// })
-
-
+    
+    
+    
+   
 
 connectDB()
       .then(() => {
