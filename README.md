@@ -489,14 +489,11 @@ in this I can wrap the route handler in the form of array and yes they will work
             })
 ## User.findOne with duplicate email ids, which object returned
   - it will return random ...
-<<<<<<< HEAD
+
 
 ## findOne()  
   -    app.get("/user", async (req,res) => {
-=======
-  
-        app.get("/user", async (req,res) => {
->>>>>>> fea33707bfea72ec87775bcc842a489294d4e97e
+
             const UserEmail = req.body.emailId;
             try{
                   console.log("yes it is...")
@@ -623,12 +620,9 @@ in this I can wrap the route handler in the form of array and yes they will work
 
 ## API - Update the user with email ID
 
-<<<<<<< HEAD
+
  - app.patch("/user", async (req,res) => {
-=======
-       app.patch("/user", async (req,res) => {
->>>>>>> fea33707bfea72ec87775bcc842a489294d4e97e
-            
+
             const emailId = req.body.emailId;
             const data = req.body;
             // console.log(data);
@@ -699,6 +693,12 @@ in this I can wrap the route handler in the form of array and yes they will work
   
 - Add validators for email ,password and photoURL
     https://www.npmjs.com/package/validator
+
+- validate data in signup API
+- install bcrypt package
+- create password using bcrypt.hash and save the user's encrypted password
+- create login API
+- compare the password and throw errors if email or password is invalid
 
 
     

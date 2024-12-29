@@ -3,22 +3,65 @@ const express = require("express");
 
 const connectDB =  require("./config/database");
 
-const User = require("./models/user")
+const bcrypt = require("bcrypt")
+
+const User = require("./models/user");
+
+const {ValidateSignUpData} = require("./utils/validation")
 
 const app = express();
 
 app.use(express.json());
 
-  app.post("/signup", async(req,res) => {
-            
-        const user = new User(req.body);
+  app.post("/signup", async(req,res) => { 
+       
       try{
+           
+           // validation of data 
+            ValidateSignUpData(req);
+
+            const {firstName,lastName,emailId,password} = req.body;
+
+            // Encrypt the password
+            const passwordHash = await bcrypt.hash(password,10);
+            console.log(passwordHash)
+
+            const user = new User({
+                 firstName,
+                 lastName,
+                 emailId,
+                 password : passwordHash
+            });
             await user.save();
             res.send("the user data has been stored successfully");
       }
       catch(err){
-             res.status(400).send(err.message);
+             res.status(400).send("ERROR :" + err.message);
       }
+  })
+
+  app.post("/login" , async(req,res) => {
+           
+        try{
+            const {emailId,password} = req.body;
+
+            const user = await User.findOne({emailId : emailId});
+
+            if(!user){
+                 throw new Error("Invalid Credentials...");
+            }
+    
+            const isPasswordValid = await bcrypt.compare(password,user.password);
+    
+            if(isPasswordValid){
+                res.send("Login Successfully...");
+            }
+            else{
+                throw new Error("Invalid Credentials...");
+            }
+        }catch(err){
+            res.status(400).send("ERROR :" + err.message);
+        }
   })
 
   app.patch("/user/:userId", async (req, res) => {
@@ -30,6 +73,7 @@ app.use(express.json());
       }
   
       try {
+
           const ALLOWED_UPDATE = [
               "firstName",
               "lastName",
@@ -74,14 +118,6 @@ app.use(express.json());
       }
   });
   
-  
-
-
-    
-    
-    
-   
-
 connectDB()
       .then(() => {
             console.log("DataBase connection Established Successfully...");
