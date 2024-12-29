@@ -623,12 +623,10 @@ in this I can wrap the route handler in the form of array and yes they will work
 
 ## API - Update the user with email ID
 
-<<<<<<< HEAD
- - app.patch("/user", async (req,res) => {
-=======
-       app.patch("/user", async (req,res) => {
->>>>>>> fea33707bfea72ec87775bcc842a489294d4e97e
-            
+
+-
+     
+      app.patch("/user", async (req,res) => {
             const emailId = req.body.emailId;
             const data = req.body;
             // console.log(data);
@@ -644,9 +642,9 @@ in this I can wrap the route handler in the form of array and yes they will work
 
 - API validation for each field
 
-    app.patch("/user/:userId", async (req, res) => {
-      const userId = req.params?.userId;
-      const data = req.body;
+      app.patch("/user/:userId", async (req, res) => {
+       const userId = req.params?.userId;
+       const data = req.body;
   
       if (!userId) {
           return res.status(400).json({ error: "userId is required" });
@@ -698,7 +696,8 @@ in this I can wrap the route handler in the form of array and yes they will work
   });
   
 - Add validators for email ,password and photoURL
-    https://www.npmjs.com/package/validator
+   -
+      https://www.npmjs.com/package/validator
 
 
     
