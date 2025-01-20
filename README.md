@@ -744,4 +744,9 @@ in this I can wrap the route handler in the form of array and yes they will work
       return isPasswordValid;
       }
     
-
+- Explore Tinder for understanding the APIs
+- go deep dive into Express Router documentation
+- group multiple routes under respective routers
+- create routes folder for managing auth,profile,request
+- create authRouter,profileRouter,requestRouter
+- import all these routers in app.js
