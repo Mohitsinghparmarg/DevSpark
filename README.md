@@ -621,7 +621,7 @@ in this I can wrap the route handler in the form of array and yes they will work
 ## API - Update the user with email ID
 
 
-<<<<<<< HEAD
+
  - app.patch("/user", async (req,res) => {
 
             const emailId = req.body.emailId;
@@ -669,8 +669,8 @@ in this I can wrap the route handler in the form of array and yes they will work
           }
   
           // Validate skills length if skills are provided
-          if (data?.skills && Array.isArray(data.skills) && data.skills.length > 10) {
-              return res.status(400).json({ error: "Skills cannot exceed 10 items" });
+          if (data?.skills && Array.isArray(data.skills) && data.skills.length > 50) {
+              return res.status(400).json({ error: "Skills cannot exceed 50 items" });
           }
   
           // Update the user
@@ -698,10 +698,50 @@ in this I can wrap the route handler in the form of array and yes they will work
 
 - validate data in signup API
 - install bcrypt package
+ - https://www.npmjs.com/package/bcrypt
+ 
 - create password using bcrypt.hash and save the user's encrypted password
 - create login API
 - compare the password and throw errors if email or password is invalid
 
+- install cookies-parser
+  - https://www.npmjs.com/package/cookie-parser
+  - https://expressjs.com/en/5x/api.html#res.cookie
 
+- send a dummy cookie to user
+
+- install jsonwebtoken 
+ - https://www.npmjs.com/package/jsonwebtoken
+ - https://jwt.io/
+
+- create GET /profile API and check if you get the cookie back in 
+   in login API after email and password validation , create a JWT token and send it to user in cookies.
+
+- read the cookies inside the profile API and find the logged in user.
+
+- userAuth Middleware
+- Add the userAuth Middleware in profile API and a new sendconnectionRequest API
+- set the expiry of JWT token cookies to 10 days
+     const token = await jwt.sign({_id: user._id},"mohit@123",{expiresIn : "10d"});
+     
+- create userSchema method to getJWT()
+    userSchema.methods.getJWT = async function() {
+         
+    const user = this;
+    const token = await jwt.sign({_id: user._id},"mohit@123",{expiresIn : "10d"});
+    return token;
+}
+- create userSchema method to comparePassword(passwordInputByUser)
+      userSchema.methods.validatePassword = async function(passwordInputByUser){
+            
+      const user = this;
+      const passwordHash = user.password;
+
+      const isPasswordValid = await bcrypt.compare(
+            passwordInputByUser,
+            passwordHash
+      )
+      return isPasswordValid;
+      }
     
 
