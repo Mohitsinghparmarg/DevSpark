@@ -750,3 +750,7 @@ in this I can wrap the route handler in the form of array and yes they will work
 - create routes folder for managing auth,profile,request
 - create authRouter,profileRouter,requestRouter
 - import all these routers in app.js
+- Create POST /logout API
+- Create PATCH /profile/edit
+- Create PATCH /profile/password API => Forgot password API
+- validate all data in every POST,PATCH APIs

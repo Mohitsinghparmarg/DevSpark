@@ -2,7 +2,7 @@
 
 ## authRouter
 - POST /signup
-- POST /logi
+- POST /login
 - POST /logout
 
 ## profileRouter

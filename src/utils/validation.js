@@ -29,4 +29,20 @@ const ValidateSignUpData = (req) => {
     return { message: "Validation successful" };
 };
 
-module.exports = { ValidateSignUpData };
+const validateEditProfileData = (req) => {
+        const allowedEditFields = [
+               "firstName",
+               "lastName",
+               "photoUrl",
+               "gender",
+               "age",
+               "about",
+               "skills"
+        ];
+    const isEditAllowed = Object.keys(req.body).every((key) => 
+               allowedEditFields.includes(key)
+    )
+  return isEditAllowed;
+}
+
+module.exports = { ValidateSignUpData ,validateEditProfileData};
