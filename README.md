@@ -754,3 +754,17 @@ in this I can wrap the route handler in the form of array and yes they will work
 - Create PATCH /profile/edit
 - Create PATCH /profile/password API => Forgot password API
 - validate all data in every POST,PATCH APIs
+- Create Connection Request Schema
+- Send Connection Request API
+- Proper Validation of Data
+- Think About all corner 
+- $or query $and query in mongoose
+- schema.pre("save") function 
+- go thoroughly in indices.
+- why do we need index in DB.
+- advantages and disadvantages of creating indices?
+- Compound Indexes
+      https://www.mongodb.com/docs/manual/core/indexes/index-types/index-compound/
+- why should we not create a lot of indices in mongoDB
+     https://www.mongodb.com/docs/manual/indexes/
+     https://stackoverflow.com/questions/13517584/indexing-do-i-have-too-many-indices
