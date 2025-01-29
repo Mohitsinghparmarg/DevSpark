@@ -777,5 +777,13 @@ in this I can wrap the route handler in the form of array and yes they will work
 - create GET / user/requests/received with all the checks
 - create GET /user/connections API
 - go deep dive into all these APIs find the bugs and resolve them
-
+- write the logic for /feed API
+- go deep dive into mongoDB queries,Explore $nin,$and,$ne and so on...
+     https://www.mongodb.com/docs/manual/reference/operator/query/nin/
  
+-  /feed?page=1&limit=10 => 1 to 10 => .skip(0) & .limit(10)
+-  /feed?page=2&limit=10 => 11 to 20 => .skip(10) & .limit(10)
+-   /feed?page=3&limit=10 => 21 to 30 => .skip(20) & .limit(10)
+
+- there are some functions like .skip()(it shows that how many documents do we have to skip) , .limit()(it provides the range or we can say the limitation).
+skip = (page - 1)*limit
