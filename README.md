@@ -762,9 +762,20 @@ in this I can wrap the route handler in the form of array and yes they will work
 - schema.pre("save") function 
 - go thoroughly in indices.
 - why do we need index in DB.
-- advantages and disadvantages of creating indices?
+- advantages and disadvantages of creating indices? 
 - Compound Indexes
       https://www.mongodb.com/docs/manual/core/indexes/index-types/index-compound/
 - why should we not create a lot of indices in mongoDB
      https://www.mongodb.com/docs/manual/indexes/
      https://stackoverflow.com/questions/13517584/indexing-do-i-have-too-many-indices
+
+- Write code with proper validations for POST /request/review/:status/:requestId
+
+- thought process on POST vs GET
+- ref and populate
+  https://mongoosejs.com/docs/populate.html#saving-refs
+- create GET / user/requests/received with all the checks
+- create GET /user/connections API
+- go deep dive into all these APIs find the bugs and resolve them
+
+ 
