@@ -1,10 +1,17 @@
-
-
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const connectDB = async () => {
-        await mongoose.connect(
-               "mongodb+srv://mohitparmar1501:p20o52WLv71QUfCY@nodejs.crawi.mongodb.net/?retryWrites=true&w=majority&appName=NodeJS"
-        )
+    try {
+        const conn = await mongoose.connect(process.env.MONGO_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+
+        console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+    } catch (err) {
+        console.error("❌ Database connection failed:", err.message);
+        process.exit(1); // Exit the process on connection failure
+    }
 };
+
 module.exports = connectDB;

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
-const jwt = require("jsonwebtoken")
-const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
     {
@@ -10,12 +10,14 @@ const userSchema = new mongoose.Schema(
             required: [true, "First name is required"],
             minLength: [4, "First name must be at least 4 characters long"],
             maxLength: [50, "First name cannot exceed 50 characters"],
+            trim: true,
         },
         lastName: {
             type: String,
             required: [true, "Last name is required"],
-            minLength: [4, "First name must be at least 4 characters long"],
-            maxLength: [50, "First name cannot exceed 50 characters"],
+            minLength: [4, "Last name must be at least 4 characters long"],
+            maxLength: [50, "Last name cannot exceed 50 characters"],
+            trim: true,
         },
         emailId: {
             type: String,
@@ -23,20 +25,19 @@ const userSchema = new mongoose.Schema(
             required: [true, "Email ID is required"],
             unique: true,
             trim: true,
-            validate(value) {
-                   if(!validator.isEmail(value)){
-                         throw new Error("Invalid Email Address" + value)
-                   }
-            }
+            validate: {
+                validator: validator.isEmail,
+                message: (props) => `${props.value} is not a valid email address`,
+            },
         },
         password: {
             type: String,
             required: [true, "Password is required"],
-            validate(value) {
-                  if(!validator.isStrongPassword(value)){
-                        throw new Error("Your Password is not Strong" + value)
-                  }
-            }
+            minlength: [8, "Password must be at least 8 characters long"],
+            validate: {
+                validator: validator.isStrongPassword,
+                message: "Password must be strong (include uppercase, lowercase, number, and symbol)",
+            },
         },
         age: {
             type: Number,
@@ -49,13 +50,11 @@ const userSchema = new mongoose.Schema(
         },
         photoUrl: {
             type: String,
-            default:
-                "https://tse2.mm.bing.net/th?id=OIP.3MA_0QOJdlvH1c6K7VPW7QHaFI&pid=Api&P=0&h=220",
-                validate(value) {
-                    if(!validator.isURL(value)){
-                          throw new Error("Invalid Photo URL" + value)
-                    }
-             }
+            default: "https://tse2.mm.bing.net/th?id=OIP.3MA_0QOJdlvH1c6K7VPW7QHaFI&pid=Api&P=0&h=220",
+            validate: {
+                validator: validator.isURL,
+                message: (props) => `${props.value} is not a valid URL`,
+            },
         },
         about: {
             type: String,
@@ -69,28 +68,24 @@ const userSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
+// Hash the password before saving the user
+userSchema.pre("save", async function (next) {
+    if (this.isModified("password")) {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
+    next();
+});
 
- 
+// Generate JWT token
+userSchema.methods.getJWT = function () {
+    return jwt.sign({ _id: this._id }, process.env.JWT_SECRET || "mohit@123", {
+        expiresIn: "10d",
+    });
+};
 
-userSchema.methods.getJWT = async function() {
-         
-    const user = this;
-    const token = await jwt.sign({_id: user._id},"mohit@123",{expiresIn : "10d"});
-    return token;
-}
-
-userSchema.methods.validatePassword = async function(passwordInputByUser){
-          
-    const user = this;
-    const passwordHash = user.password;
-
-    const isPasswordValid = await bcrypt.compare(
-           passwordInputByUser,
-           passwordHash
-    )
-    return isPasswordValid;
-}
-
- 
+// Validate password
+userSchema.methods.validatePassword = async function (passwordInputByUser) {
+    return await bcrypt.compare(passwordInputByUser, this.password);
+};
 
 module.exports = mongoose.model("User", userSchema);

@@ -1,39 +1,45 @@
-
 const express = require("express");
 const connectDB = require("./config/database");
-const app = express();
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
+require("dotenv").config();
+
+const app = express();
+
+// Middleware setup
 app.use(express.json());
 app.use(cookieParser());
-const cors = require("cors")
+app.use(
+    cors({
+        origin: process.env.FRONTEND_URL,
+        credentials: true,
+    })
+);
 
-app.use(cors(
-      {
-            origin: "http://localhost:5173",
-            credentials: true,
-      },
-));
-
-
-
+// Import routes
 const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
 
-
+// Route handling
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
-app.use("/", userRouter)
+app.use("/", userRouter);
 
+// Database connection and server startup
 connectDB()
-      .then(() => {
-            console.log("DataBase connection Established Successfully...");
-            app.listen(7777, () => {
-                  console.log("server is running on 7777...")
-            });
-      })
-      .catch((err) => {
-            console.log("DataBase connection couldn't be Established")
-      })
+    .then(() => {
+        console.log("✅ Database connection established successfully.");
+
+        const PORT = process.env.PORT || 5000;
+        app.listen(PORT, () => {
+            console.log(`🚀 Server is running on port ${PORT}...`);
+        });
+    })
+    .catch((err) => {
+        console.error("❌ Database connection failed:", err.message);
+        process.exit(1); // Exit the process on database connection failure
+    });
+
