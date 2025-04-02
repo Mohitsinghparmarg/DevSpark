@@ -1,17 +1,7 @@
 ##   
 
-- Create a repository
-
-- Initialize the repository
-
 - node_modules, package.json, package-lock.json
     - https://stackoverflow.com/questions/76417762/  package-json-vs-package-lock-json-vs-semantic-versioning
-
-- Install express
-
-- Create a server
-
-- Listen to port 7777
 
 - Write request handlers for /test , /hello
 
@@ -33,25 +23,11 @@
                console.log("Server is running successfully on Port 7777")
          });
 
-
-- Install nodemon and update scripts inside package.json
-
-- What are dependencies
-
-- What is the use of "-g" while npm install
-
 - Difference between caret and tilde ( ^ vs ~ )
       -   https://stackoverflow.com/questions/22343224/whats-the-difference-between-tilde-and-caret-in-package-json
 
-- initialize git
 
-- .gitignore
-
-- Create a remote repo on github
-
-- Push all code to remote origin
-
-- Play with routes and route extensions ex. /hello, / , hello/2, /test
+- routes and route extensions ex. /hello, / , hello/2, /test
      
                const express = require("express");
                const app = express();
@@ -73,8 +49,7 @@
                })
 
 - Order of the routes matters a lot
-- Install Postman app and make a workspace/collectio > test API call
-- Write logic to handle GET, POST, PATCH, DELETE API Calls and test them on Postman
+- logic to handle GET, POST, PATCH, DELETE API Calls and test them on Postman
              
             const express = require("express");
             const app = express();
@@ -96,29 +71,29 @@
             app.listen(7777,()=>{
                      console.log("server is running on 7777...")
             })
-## Explore Routing and use of ?,+,*() in the Routes...
+## Routing and use of ?,+,*() in the Routes...
 
  ## ?
          app.get("/ab?c", (req,res) =>{
-              console.log("hello mohit what Darling...!!");
+              console.log("hello mohit...!!");
               res.send("data has been fetched from the Database...");
          })
 
  ## +
     app.get("/ab+c", (req,res) =>{
-          console.log("hello mohit what Darling...!!");
+          console.log("hello mohit...!!");
           res.send("data has been fetched from the Database...");
     })
 
  ## *
     app.get("/ab*c", (req,res) =>{
-          console.log("hello mohit what Darling...!!");
+          console.log("hello mohit...!!");
           res.send("data has been fetched from the Database...");
     })
 
  ## ()?
     app.get("/a(bc)?d", (req,res) =>{
-          console.log("hello mohit what Darling...!!");
+          console.log("hello mohit...!!");
           res.send("data has been fetched from the Database...");
     })
 
@@ -279,12 +254,8 @@
             res.send("4th Route handler...");
          }, )
 
-         
-## next function and errors along with res.send()
- yes yes we have already discussed in the above section
 
 ## app.use("/route", rH, [rH2, rH3], rH4, rh5);
-in this I can wrap the route handler in the form of array and yes they will work in the same way...
 
   - 1. like this
        
@@ -363,7 +334,7 @@ in this I can wrap the route handler in the form of array and yes they will work
 ## Difference  between app.use and app.all
      https://github.com/rohan-paul/Awesome-JavaScript-Interviews/blob/master/Node-Express/app.use-vs-app.get.md
 
-## Write a dummy auth middleware for admin
+##  dummy auth middleware for admin
      const adminAuth = (req,res,next)=>{
     console.log("check whether the Admin is Authorized or not");
        const token = "mohit";
@@ -380,7 +351,7 @@ in this I can wrap the route handler in the form of array and yes they will work
             res.send("admin is authorized...")
   });
 
-## Write a dummy auth middleware for all user routes, except /user/login
+## dummy auth middleware for all user routes, except /user/login
 
      const userAuth = (req,res,next)=>{
     console.log("check whether the user is Authorized or not");
@@ -419,37 +390,8 @@ in this I can wrap the route handler in the form of array and yes they will work
 ##
    - 
      https://mongoosejs.com/docs/guide.html
-   - Create a free cluster on MongoDB official website (Mongo Atlas)
-   - Install mongoose library
-   - Connect your application to the Database "Connection-url"/
-   - Call the connectDB function and connect to database before starting application on 7777
-   - Create a userSchema & user Model
          
-            const mongoose = require("mongoose");
-
-            const userScema = new mongoose.Schema({
-                  firstName : {
-                        type : String
-                  },
-                  lastName : {
-                        type : String
-                  },
-                  emailId : {
-                        type : String
-                  },
-                  password : {
-                        type : String
-                  },
-                  age : {
-                        type : Number
-                  },
-                  gender : {
-                        type : String
-                  }
-            })
-         module.exports = mongoose.model("User",userScema);
-         
-- Create POST /sigup API to add data to database, Push some documents using API calls from postman, Error Handling using try , catch
+- POST /sigup API to add data to database, Push some documents using API calls from postman, Error Handling using try , catch
     
                       app.post("/signup", async (req,res) => {
                             const user = new User({
@@ -475,7 +417,7 @@ in this I can wrap the route handler in the form of array and yes they will work
  -  simply use it in app.js :
        - app.use(express.json());
 
-## Make your signup API dynamic to receive data from the end user
+## signup API, dynamic to receive data from the end user
 
               app.post("/signup", async (req,res) => {
                   const user = new User (req.body)
@@ -563,7 +505,7 @@ in this I can wrap the route handler in the form of array and yes they will work
                   res.status(400).send("these is Error!!!")
             }
         })
-## Create a delete user API
+## delete user API
  
       app.delete("/user",async (req,res) =>{ 
          const UserId = req.body.UserId;
@@ -595,7 +537,7 @@ in this I can wrap the route handler in the form of array and yes they will work
             } 
       })
 
-## Explore the Mongoose Documention for Model methods
+## Mongoose Documention for Model methods
   - https://mongoosejs.com/docs/api/model.html
 
 ## What are options in a Model.findOneAndUpdate method, explore more about it
@@ -619,8 +561,6 @@ in this I can wrap the route handler in the form of array and yes they will work
 
 
 ## API - Update the user with email ID
-
-
 
  - app.patch("/user", async (req,res) => {
 
@@ -692,29 +632,26 @@ in this I can wrap the route handler in the form of array and yes they will work
       }
   });
   
-- Add validators for email ,password and photoURL
-   -
-      https://www.npmjs.com/package/validator
+- validators for email ,password and photoURL
+   - https://www.npmjs.com/package/validator
 
 - validate data in signup API
 - install bcrypt package
  - https://www.npmjs.com/package/bcrypt
  
-- create password using bcrypt.hash and save the user's encrypted password
-- create login API
-- compare the password and throw errors if email or password is invalid
+- password using bcrypt.hash and save the user's encrypted password
+- Bcrypt Generator - Online Hash Generator & Checker
+  https://bcrypt-generator.com/
 
-- install cookies-parser
+- cookies-parser
   - https://www.npmjs.com/package/cookie-parser
   - https://expressjs.com/en/5x/api.html#res.cookie
 
-- send a dummy cookie to user
-
-- install jsonwebtoken 
+- jsonwebtoken 
  - https://www.npmjs.com/package/jsonwebtoken
  - https://jwt.io/
 
-- create GET /profile API and check if you get the cookie back in 
+- GET /profile API and check if you get the cookie back in 
    in login API after email and password validation , create a JWT token and send it to user in cookies.
 
 - read the cookies inside the profile API and find the logged in user.
@@ -744,23 +681,22 @@ in this I can wrap the route handler in the form of array and yes they will work
       return isPasswordValid;
       }
     
-- Explore Tinder for understanding the APIs
-- go deep dive into Express Router documentation
+- Tinder for understanding the APIs
+- deep dive into Express Router documentation
 - group multiple routes under respective routers
-- create routes folder for managing auth,profile,request
-- create authRouter,profileRouter,requestRouter
+- routes folder for managing auth,profile,request
+- authRouter,profileRouter,requestRouter
 - import all these routers in app.js
-- Create POST /logout API
-- Create PATCH /profile/edit
-- Create PATCH /profile/password API => Forgot password API
-- validate all data in every POST,PATCH APIs
-- Create Connection Request Schema
-- Send Connection Request API
-- Proper Validation of Data
-- Think About all corner 
-- $or query $and query in mongoose
-- schema.pre("save") function 
-- go thoroughly in indices.
+-  POST /logout API
+-  PATCH /profile/edit
+-  PATCH /profile/password API => Forgot password API
+-  validate all data in every POST,PATCH APIs
+-  Connection Request Schema
+-  Send Connection Request API
+-  Proper Validation of Data
+-  $or query $and query in mongoose
+-  schema.pre("save") function 
+-  go thoroughly in indices.
 - why do we need index in DB.
 - advantages and disadvantages of creating indices? 
 - Compound Indexes
@@ -774,11 +710,11 @@ in this I can wrap the route handler in the form of array and yes they will work
 - thought process on POST vs GET
 - ref and populate
   https://mongoosejs.com/docs/populate.html#saving-refs
-- create GET / user/requests/received with all the checks
-- create GET /user/connections API
-- go deep dive into all these APIs find the bugs and resolve them
+- GET / user/requests/received with all the checks
+- GET /user/connections API
+- deep dive into all these APIs find the bugs and resolve them
 - write the logic for /feed API
-- go deep dive into mongoDB queries,Explore $nin,$and,$ne and so on...
+- deep dive into mongoDB queries,Explore $nin,$and,$ne and so on...
      https://www.mongodb.com/docs/manual/reference/operator/query/nin/
  
 -  /feed?page=1&limit=10 => 1 to 10 => .skip(0) & .limit(10)
@@ -787,3 +723,6 @@ in this I can wrap the route handler in the form of array and yes they will work
 
 - there are some functions like .skip()(it shows that how many documents do we have to skip) , .limit()(it provides the range or we can say the limitation).
 skip = (page - 1)*limit
+
+## Future Enhancements :
+    - Chat feature.

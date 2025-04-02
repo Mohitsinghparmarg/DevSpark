@@ -11,7 +11,7 @@ authRouter.post("/signup", async (req, res) => {
         // Validate the incoming data
         ValidateSignUpData(req);
 
-        const { firstName, lastName, emailId, password,gender,about ,skills} = req.body;
+        const { firstName, lastName, emailId, password, gender, about, skills } = req.body;
 
         // Check if the user already exists
         const existingUser = await User.findOne({ emailId });
@@ -20,10 +20,20 @@ authRouter.post("/signup", async (req, res) => {
         }
 
         // Create and save the user (password hashing handled in the model)
-        const user = new User({ firstName, lastName, emailId, password ,gender,about,skills});
-        await user.save();
+        const user = new User({ firstName, lastName, emailId, password, gender, about, skills });
+        const savedUser = await user.save();
+        // Generate JWT token
+        const token = savedUser.getJWT();
 
-        res.status(201).json({ message: "User registered successfully" });
+        // Set secure cookie
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            expires: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000), // 10 days
+        });
+
+        res.json({ message: "User Added Successfully!", data: savedUser })
     } catch (err) {
         res.status(400).json({ message: "ERROR: " + err.message });
     }

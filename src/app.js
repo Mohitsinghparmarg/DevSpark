@@ -40,6 +40,6 @@ connectDB()
     })
     .catch((err) => {
         console.error("❌ Database connection failed:", err.message);
-        process.exit(1); // Exit the process on database connection failure
+        process.exit(1); 
     });
 
