@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema(
             required: [true, "First name is required"],
             minLength: [4, "First name must be at least 4 characters long"],
             maxLength: [50, "First name cannot exceed 50 characters"],
+            index : true,
             trim: true,
         },
         lastName: {
@@ -17,6 +18,7 @@ const userSchema = new mongoose.Schema(
             required: [true, "Last name is required"],
             minLength: [4, "Last name must be at least 4 characters long"],
             maxLength: [50, "Last name cannot exceed 50 characters"],
+            index : true,
             trim: true,
         },
         emailId: {
@@ -67,6 +69,9 @@ const userSchema = new mongoose.Schema(
     },
     { timestamps: true }
 );
+
+// User.find({firstName: "Mohit", lastName: "Parmar"})
+// userSchema.index({firstName: 1, lastName: 1});
 
 // Hash the password before saving the user
 userSchema.pre("save", async function (next) {

@@ -28,7 +28,7 @@ const connectionRequestSchema = new mongoose.Schema(
 );
 
 // Compound Index to prevent duplicate connection requests
-connectionRequestSchema.index({ fromUserId: 1, toUserId: 1 }, { unique: true });
+ connectionRequestSchema.index({ fromUserId: 1, toUserId: 1 }, { unique: true });
 
 // Pre-save hook to prevent self-requests
 connectionRequestSchema.pre("save", function(next) {

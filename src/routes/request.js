@@ -16,10 +16,10 @@ requestRouter.post("/request/send/:status/:toUserId", userAuth, async (req, res)
         }
 
         // Prevent sending a request to self
-        if (fromUserId.equals(toUserId)) {
-            return res.status(400).json({ message: "You cannot send a connection request to yourself" });
-        }
-
+        // if (fromUserId.equals(toUserId)) {
+        //     return res.status(400).json({ message: "You cannot send a connection request to yourself" });
+        // }
+ 
         const toUser = await User.findById(toUserId);
         if (!toUser) {
             return res.status(404).json({ message: "User not found" });
