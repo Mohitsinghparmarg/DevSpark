@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema(
             required: [true, "First name is required"],
             minLength: [4, "First name must be at least 4 characters long"],
             maxLength: [50, "First name cannot exceed 50 characters"],
-            index : true,
+            index: true,
             trim: true,
         },
         lastName: {
@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema(
             required: [true, "Last name is required"],
             minLength: [4, "Last name must be at least 4 characters long"],
             maxLength: [50, "Last name cannot exceed 50 characters"],
-            index : true,
+            index: true,
             trim: true,
         },
         emailId: {
@@ -81,14 +81,12 @@ userSchema.pre("save", async function (next) {
     next();
 });
 
-// Generate JWT token
 userSchema.methods.getJWT = function () {
     return jwt.sign({ _id: this._id }, process.env.JWT_SECRET || "mohit@123", {
         expiresIn: "10d",
     });
 };
 
-// Validate password
 userSchema.methods.validatePassword = async function (passwordInputByUser) {
     return await bcrypt.compare(passwordInputByUser, this.password);
 };

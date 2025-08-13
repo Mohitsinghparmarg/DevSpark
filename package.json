@@ -2,7 +2,7 @@
   "name": "lovelane",
   "version": "1.0.0",
   "description": "It is an online dating app where you can find your match",
-  "main": "src/app.js",              
+  "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js"
@@ -18,5 +18,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.1",
     "validator": "^13.12.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }

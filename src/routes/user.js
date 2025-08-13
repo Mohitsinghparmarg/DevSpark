@@ -6,7 +6,6 @@ const userRouter = express.Router();
 
 const USER_SAFE_DATA = "firstName lastName photoUrl age gender about skills";
 
-// Get all pending connection requests for the logged-in user
 userRouter.get("/user/requests/received", userAuth, async (req, res) => {
     try {
         const loggedInUser = req.user;
@@ -25,7 +24,6 @@ userRouter.get("/user/requests/received", userAuth, async (req, res) => {
     }
 });
 
-// Get all accepted connections for the logged-in user
 userRouter.get("/user/connections", userAuth, async (req, res) => {
     try {
         const loggedInUser = req.user;
@@ -40,7 +38,6 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
             .populate("fromUserId", USER_SAFE_DATA)
             .populate("toUserId", USER_SAFE_DATA);
 
-        // Extract connection users
         const connections = connectionRequests.map((req) =>
             req.fromUserId._id.equals(loggedInUser._id) ? req.toUserId : req.fromUserId
         );
@@ -55,16 +52,14 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
     }
 });
 
-// Get users for the feed (excluding connected users and logged-in user)
 userRouter.get("/feed", userAuth, async (req, res) => {
     try {
         const loggedInUser = req.user;
         const page = parseInt(req.query.page) || 1;
-        let limit = parseInt(req.query.limit) || 20;
-        limit = limit > 50 ? 50 : limit; // Limit to max 50 users per page
+        let limit = parseInt(req.query.limit) || 100;
+        limit = limit > 100 ? 100 : limit;
         const skip = (page - 1) * limit;
 
-        // Find all connected user IDs
         const connectionRequests = await connectionRequestModel
             .find({ $or: [{ fromUserId: loggedInUser._id }, { toUserId: loggedInUser._id }] })
             .select("fromUserId toUserId");
@@ -76,7 +71,6 @@ userRouter.get("/feed", userAuth, async (req, res) => {
         });
         hideUsersFromFeed.add(loggedInUser._id.toString());
 
-        // Fetch users not in connections and not the logged-in user
         const users = await User.find({ _id: { $nin: Array.from(hideUsersFromFeed) } })
             .select(USER_SAFE_DATA)
             .skip(skip)

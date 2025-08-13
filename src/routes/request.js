@@ -4,7 +4,6 @@ const { userAuth } = require("../middlewares/auth");
 const User = require("../models/user");
 const connectionRequestModel = require("../models/connectionRequest");
 
-// Send Connection Request
 requestRouter.post("/request/send/:status/:toUserId", userAuth, async (req, res) => {
     try {
         const fromUserId = req.user._id;
@@ -19,13 +18,12 @@ requestRouter.post("/request/send/:status/:toUserId", userAuth, async (req, res)
         // if (fromUserId.equals(toUserId)) {
         //     return res.status(400).json({ message: "You cannot send a connection request to yourself" });
         // }
- 
+
         const toUser = await User.findById(toUserId);
         if (!toUser) {
             return res.status(404).json({ message: "User not found" });
         }
 
-        // Check if a connection request already exists
         const existingConnectionRequest = await connectionRequestModel.findOne({
             $or: [
                 { fromUserId, toUserId },
@@ -37,7 +35,6 @@ requestRouter.post("/request/send/:status/:toUserId", userAuth, async (req, res)
             return res.status(400).json({ message: "Connection request already exists" });
         }
 
-        // Create and save the new connection request
         const connectionRequest = new connectionRequestModel({
             fromUserId,
             toUserId,
@@ -55,7 +52,6 @@ requestRouter.post("/request/send/:status/:toUserId", userAuth, async (req, res)
     }
 });
 
-// Review Connection Request
 requestRouter.post("/request/review/:status/:requestId", userAuth, async (req, res) => {
     try {
         const loggedInUser = req.user;
@@ -66,7 +62,6 @@ requestRouter.post("/request/review/:status/:requestId", userAuth, async (req, r
             return res.status(400).json({ message: "Invalid status type" });
         }
 
-        // Find the connection request
         const connectionRequest = await connectionRequestModel.findOne({
             _id: requestId,
             toUserId: loggedInUser._id,
@@ -77,7 +72,6 @@ requestRouter.post("/request/review/:status/:requestId", userAuth, async (req, r
             return res.status(404).json({ message: "Connection request not found or already reviewed" });
         }
 
-        // Update the request status
         connectionRequest.status = status;
 
         const updatedRequest = await connectionRequest.save();

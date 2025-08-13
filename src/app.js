@@ -6,7 +6,6 @@ require("dotenv").config();
 
 const app = express();
 
-// Middleware setup
 app.use(express.json());
 app.use(cookieParser());
 app.use(
@@ -16,19 +15,16 @@ app.use(
     })
 );
 
-// Import routes
 const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
 
-// Route handling
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRouter);
 
-// Database connection and server startup
 connectDB()
     .then(() => {
         console.log("✅ Database connection established successfully.");
@@ -40,6 +36,5 @@ connectDB()
     })
     .catch((err) => {
         console.error("❌ Database connection failed:", err.message);
-        process.exit(1); 
+        process.exit(1);
     });
-
